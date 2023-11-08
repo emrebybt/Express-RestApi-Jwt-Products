@@ -7,11 +7,10 @@ const ProductSchema = new Schema({
     price: Number,
     stock: Number,
     imageUrl: String,
-    // categoryId: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'category'
-    // }
-    category:String
+    category: {
+        type: Schema.Types.ObjectId,
+        ref: 'category'
+    }
 })
 
 module.exports = mongoose.model('product', ProductSchema)
