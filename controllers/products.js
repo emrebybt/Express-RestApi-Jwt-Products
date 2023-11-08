@@ -1,67 +1,70 @@
-const express = require('express');
-const Product = require('../models/product');
+const express = require('express')
 
+const Product = require('../models/product')
 
-exports.getProduct = (req, res, next) => {
-    Product.findById({_id: req.params._id})    //postmanda id yakalamıyor chromeda çalışıyor
-    .then(product => {
-        res.json(product)
-    })
-    .catch(err => {
-        res.json({message: 'Ürün bulunamadı'})
-    })
-    // res.json({message: 'Api çalıştı'})
-}
-
-exports.deleteProduct = (req, res, next) => {
-    Product.findByIdAndDelete({_id: req.params._id})
-    .then(() => {
-        res.json('Ürün silindi')
-    })
-    .catch(err => {
-        res.json('Ürün silinemedi')
-    })
-}
-
-
-exports.getProducts = (req, res, next) => {
+exports.getProducts=(req,res,next)=>{
     Product.find()
-    .then(products => {
+    .then(products=>{
         res.json(products)
     })
     .catch(err => {
-        res.json({message: 'Ürün bulunamadı'})
-    })
-    // res.json({message: 'Api çalıştı'})
+        res.json({message:'Ürün bulunamadı!'})
+    })  
 }
 
-exports.postProducts = (req, res, next) => {
-    const {name, price, stock, imageUrl, category} = req.body;
-
+exports.postProduct=(req,res,next)=>{
+    const {name,price,stock,imageUrl,category} = req.body
     const product = new Product({
-        name: name,
-        price: price,
-        stock: stock,
-        imageUrl: imageUrl,
-        category: category
+        name:name,
+        price:price,
+        stock:stock,
+        imageUrl:imageUrl,
+        category:category
     })
-
     product.save()
-    .then((product) => {
+    .then((product)=>{
         res.json(product)
     })
-    .catch(err => {
-        res.json({message: 'Kayıt başarısız'})
-    })
+    .catch(err=>{
+        res.json({message:'Ürün kayıt edilemedi'})
+    })  
 }
 
-exports.putProduct = (req, res, next) => {
-    Product.findByIdAndUpdate(req.body.id, req.body, {new: true})
-    .then(product => {
-        product.save();
+exports.putProductById = (req, res, next) => {
+    Product.findByIdAndUpdate(req.body.id, req.body, {
+        new: true //Güncellenen yeni datayı döndürür
+    })
+    .then( product => {
         res.json(product)
     })
-    .catch(err => {
-        res.json('Ürün güncellenemedi')
+    .catch(err=>{
+        res.json({message:'Ürün güncellenemedi'})
     }) 
 }
+
+exports.deleteProductById = (req, res, next) =>{
+    Product.findByIdAndDelete(req.params.id)
+    .then(product=>{
+        res.json(product)
+    })
+    .catch(err => {
+        res.json({message:'Ürün silinemedi!'})
+    })
+}
+
+exports.getProductById = (req, res, next) =>{
+    Product.findById(req.params.id)
+    .then(product=>{
+        res.json(product)
+    })
+    .catch(err => {
+        res.json({message:'Ürün bulunamadı!'})
+    })
+}
+
+
+
+
+
+
+
